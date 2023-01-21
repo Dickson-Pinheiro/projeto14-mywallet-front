@@ -1,24 +1,23 @@
 import { Link } from "react-router-dom"
 import styled from "styled-components"
+
 import { ContainerForm } from "../styled/ContainerForm"
 
-export function Registration(){
-    return(
-        <ContainerRegistration>
+export function Login() {
+    return (
+        <ContainerLogin>
             <h1>MyWallet</h1>
             <ContainerForm>
-                <input type="text" placeholder="Nome"/>
-                <input type="email" placeholder="E-mail" />
-                <input type="password" placeholder="Senha" />
-                <input type="password" placeholder="Confirme a senha" />
-                <button>Cadastrar</button>
+                <input type="email" placeholder="E-mail" required/>
+                <input type="password" placeholder="Senha" required/>
+                <button>Entrar</button>
             </ContainerForm>
-            <Link to="/">Já tem uma conta? Entre agora!</Link>
-        </ContainerRegistration>
+            <Link to="/cadastro">Primeira vez? Cadastre-se!</Link>
+        </ContainerLogin>
     )
 }
 
-const ContainerRegistration = styled.div`
+const ContainerLogin = styled.div`
     height: 100vh;
     width: 100%;
     background-color: var(--purple-500);

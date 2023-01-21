@@ -1,9 +1,9 @@
 import {Route, Routes, BrowserRouter} from "react-router-dom"
-import { Home } from "./components/Home"
-import { Inflow } from "./components/Inflow"
-import { Login } from "./components/Login"
-import { Outflow } from "./components/Outflow"
-import { Registration } from "./components/Registration"
+import { Home } from "./pages/Home"
+import { Inflow } from "./pages/Inflow"
+import { Login } from "./pages/Login"
+import { Outflow } from "./pages/Outflow"
+import { Registration } from "./pages/Registration"
 
 
 export function Router(){

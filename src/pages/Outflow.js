@@ -8,8 +8,8 @@ export function Outflow(){
                 <h1>Nova saída</h1>
             </header>
             <ContainerForm>
-                <input type="number" placeholder="Valor"/>
-                <input type="text" placeholder="Descrição" />
+                <input type="number" placeholder="Valor" required/>
+                <input type="text" placeholder="Descrição" required/>
                 <button>Salvar saída</button>
             </ContainerForm>
         </ContainerOutFlow>

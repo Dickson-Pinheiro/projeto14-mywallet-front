@@ -8,8 +8,8 @@ export function Inflow(){
                 <h1>Nova entrada</h1>
             </header>
             <ContainerForm>
-                <input type="number" placeholder="Valor"/>
-                <input type="text" placeholder="Descrição" />
+                <input type="number" placeholder="Valor" required/>
+                <input type="text" placeholder="Descrição" required/>
                 <button>Salvar entrada</button>
             </ContainerForm>
             
