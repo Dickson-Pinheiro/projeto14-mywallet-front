@@ -1,19 +1,62 @@
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import styled from "styled-components"
 
 import logout from "../assets/logout.svg"
 import plus from "../assets/plus.svg"
 import minus from "../assets/minus.svg"
+import { useEffect, useState } from "react"
+import axios from "axios"
+import { MainTransactions } from "../components/MainTransactions"
+import { TotalTransactions } from "../components/TotalTransactions"
 
-export function Home(){
-    return(
+export function Home() {
+    const [name, setName] = useState("")
+    const [transactions, setTransactions] = useState([])
+    const navigate = useNavigate()
+    const [refresh, setRefresh] = useState(false)
+
+    function logoutPage() {
+        localStorage.removeItem("token")
+        localStorage.removeItem("name")
+        localStorage.removeItem("id")
+    }
+
+    useEffect(() => {
+        let nome = localStorage.getItem("name")
+        if (!nome) {
+            navigate("/")
+            return
+        }
+        setName(nome)
+        async function getTransactions() {
+            let config = {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem("token")}`
+                }
+            }
+            try {
+                let result = await axios.get("http://localhost:5000/transactions", config)
+                setTransactions([...result.data])
+            } catch (error) {
+                localStorage.removeItem("token")
+                localStorage.removeItem("name")
+                localStorage.removeItem("id")
+                navigate("/")
+            }
+
+        }
+        getTransactions()
+    }, [refresh])
+
+    return (
         <ContainerHome>
             <header>
-                <h1>Olá, Fulano</h1>
-                <Link to="/"><img src={logout} alt="seta apontando para a esquerda dentro de um retângulo, indicando local para deslogar do site."/></Link>
+                <h1>Olá, {name}</h1>
+                <Link to="/"><img src={logout} alt="seta apontando para a esquerda dentro de um retângulo, indicando local para deslogar do site." onClick={logoutPage} /></Link>
             </header>
             <ContainerMain>
-                <p>Não há registros de entrada ou saída</p>
+                {transactions.length ? <MainTransactions transactions={transactions} refresh={refresh} setRefresh={setRefresh}/> : <p>Não há registros de entrada ou saída</p>}
+                {transactions.length ? <TotalTransactions transactions={transactions} /> : ""}
             </ContainerMain>
             <ContainerCreateTransactions>
                 <Link to="/nova-entrada">
@@ -21,8 +64,8 @@ export function Home(){
                     <p>Nova entrada</p>
                 </Link>
                 <Link to="/nova-saida">
-                <img src={minus} />
-                <p>Nova saída</p>
+                    <img src={minus} />
+                    <p>Nova saída</p>
                 </Link>
             </ContainerCreateTransactions>
         </ContainerHome>
@@ -61,16 +104,18 @@ const ContainerMain = styled.main`
     height: 65%;
     background-color: var(--white);
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
-    p {
+    padding: 12px;
+    box-sizing: border-box;
+    & > p {
         max-width: 180px;
         text-align: center;
         font-family: Raleway;
         font-size: 20px;
         color: var(--gray-200);
         line-height: 23.48px;
-
     }
 `
 

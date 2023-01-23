@@ -11,7 +11,10 @@ License: none (public domain)
     --black: #000000;
     --purple-300: #A328D6;
     --purple-500: #8C11BE;
-    --gray-200: #868686;   
+    --gray-100: #C6C6C6;
+    --gray-200: #868686;
+    --green-600: #03AC00;
+    --red-800: #C70000;    
 }
 
 html, body, div, span, applet, object, iframe,

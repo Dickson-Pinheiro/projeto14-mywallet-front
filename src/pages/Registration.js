@@ -1,16 +1,42 @@
-import { Link } from "react-router-dom"
+import axios from "axios"
+import { useState } from "react"
+import { Link, useNavigate } from "react-router-dom"
 import styled from "styled-components"
 import { ContainerForm } from "../styled/ContainerForm"
 
-export function Registration(){
-    return(
-        <ContainerRegistration>
+
+export function Registration() {
+    const [name, setName] = useState("")
+    const [email, setEmail] = useState("")
+    const [password, setPassword] = useState("")
+    const [confirmPassword, setConfirmPassword] = useState("")
+    const navigate = useNavigate()
+
+    async function signUp(e) {
+        e.preventDefault()
+        if (password !== confirmPassword) {
+            window.alert("A senha e a confirmação precisam ser iguais")
+            return
+        }
+        try {
+            await axios.post("http://localhost:5000/sign-up", { name, email, password, confirmPassword })
+
+            navigate("/")
+        } catch (error) {
+            window.alert("Tente cadastrar novamente")
+        }
+
+
+    }
+
+    return (
+        <ContainerRegistration onSubmit={signUp}>
             <h1>MyWallet</h1>
             <ContainerForm>
-                <input type="text" placeholder="Nome" required/>
-                <input type="email" placeholder="E-mail" required/>
-                <input type="password" placeholder="Senha" required/>
-                <input type="password" placeholder="Confirme a senha" required/>
+                <input type="text" placeholder="Nome" onChange={e => setName(e.target.value)} value={name} required />
+                <input type="email" placeholder="E-mail" onChange={e => setEmail(e.target.value)} value={email} required />
+                <input type="password" placeholder="Senha" onChange={e => setPassword(e.target.value)} value={password} required />
+                <input type="password" placeholder="Confirme a senha" onChange={e => setConfirmPassword(e.target.value)} value={confirmPassword} required />
                 <button>Cadastrar</button>
             </ContainerForm>
             <Link to="/">Já tem uma conta? Entre agora!</Link>

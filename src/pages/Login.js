@@ -1,15 +1,47 @@
-import { Link } from "react-router-dom"
+import { useEffect, useState } from "react"
+import axios from "axios"
+import { Link, useNavigate } from "react-router-dom"
 import styled from "styled-components"
 
 import { ContainerForm } from "../styled/ContainerForm"
 
 export function Login() {
+    const [email, setEmail] = useState("")
+    const [password, setPassword] = useState("")
+    const navigate = useNavigate()
+
+    useEffect(() => {
+        if(localStorage.getItem("token")){
+            navigate("/home")
+        }
+    }, [])
+
+    async function handleLogin(e){
+        e.preventDefault()
+
+        try {
+
+            const result = await axios.post("http://localhost:5000/sign-in", {email, password})
+            localStorage.setItem("token", result.data.token)
+            localStorage.setItem("name", result.data.name)
+            localStorage.setItem("userId", result.data.id)
+            setEmail("")
+            setPassword("")
+            navigate("/home")
+        } catch (error) {
+            console.log(error)
+            window.alert("Login ou senha incorretos")
+            setEmail("")
+            setPassword("")
+        }
+    }
+
     return (
         <ContainerLogin>
             <h1>MyWallet</h1>
-            <ContainerForm>
-                <input type="email" placeholder="E-mail" required/>
-                <input type="password" placeholder="Senha" required/>
+            <ContainerForm onSubmit={handleLogin}>
+                <input type="email" placeholder="E-mail" onChange={e => setEmail(e.target.value)} value={email} required/>
+                <input type="password" placeholder="Senha" onChange={e => setPassword(e.target.value)} value={password} required/>
                 <button>Entrar</button>
             </ContainerForm>
             <Link to="/cadastro">Primeira vez? Cadastre-se!</Link>
